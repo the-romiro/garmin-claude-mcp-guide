@@ -6,7 +6,12 @@ no **Windows** usando o servidor MCP da comunidade
 treinos, sono, HRV, Body Battery, VO2max e outros dados, e pode atuar como seu "treinador" de
 corrida.
 
-**[Abrir o tutorial completo](garmin-claude-tutorial.md)**
+Duas versões do guia:
+
+- **[Tutorial com `uv`](garmin-claude-tutorial-uv.md)** (recomendado): menos passos, não precisa
+  instalar o Python nem mexer com `venv`.
+- **[Tutorial com `pip`](garmin-claude-tutorial.md)**: o fluxo clássico com Python + Git + `venv`,
+  mais próximo do tutorial original.
 
 ## Para quem é
 
@@ -24,8 +29,8 @@ para os erros mais comuns no Windows.
 
 Tempo estimado: 20 a 30 minutos.
 
-Também tem um caminho alternativo mais curto usando [`uv`](https://docs.astral.sh/uv/), que é o
-recomendado hoje pelo README do `garmin_mcp`.
+Na [versão com `uv`](garmin-claude-tutorial-uv.md), os passos 2 e 3 viram "instalar o `uv`", que é
+o caminho recomendado hoje pelo README do `garmin_mcp`.
 
 ## Avisos importantes
 

@@ -519,8 +519,9 @@ Depois reinicia o Claude Desktop (Passo 4.6).
 ## Caminho alternativo com `uv` (menos passos)
 
 O README atual do `garmin_mcp` recomenda usar o [`uv`](https://docs.astral.sh/uv/) em vez de
-Python + Git + venv. O `uv` baixa sozinho o Python certo e o conector. Se você ainda não fez as
-Partes 1 a 4, pode seguir só isto:
+Python + Git + venv. O `uv` baixa sozinho o Python certo e o conector. O passo a passo completo,
+com solução de problemas, está em **[garmin-claude-tutorial-uv.md](garmin-claude-tutorial-uv.md)**.
+Resumo, para quem ainda não fez as Partes 1 a 4:
 
 1. Instala o `uv` (Prompt de Comando):
 
