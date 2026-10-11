@@ -1,0 +1,9 @@
+# Source material (third-party content, not published)
+*.pptx
+garmin-claude-tutorial-original.md
+
+# OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+*:Zone.Identifier
