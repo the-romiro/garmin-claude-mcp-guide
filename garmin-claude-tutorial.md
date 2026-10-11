@@ -46,9 +46,11 @@ Pronto! Agora bora pro setup técnico.
 
 ### Passo 1.1 — Instalar o Python 3.13
 
-> **Mudou:** o original pedia Python 3.11, que **não funciona mais**. A biblioteca do Garmin
-> (`garminconnect` 0.3+) exige **Python 3.12 ou mais novo**. No 3.11, o `pip` instala uma versão
-> antiga que usa o login antigo (`garth`), que a Garmin bloqueou, e a autenticação falha.
+> **Mudou:** o original pedia Python 3.11. O README atual do `garmin_mcp` pede **Python 3.12 ou
+> mais novo**, e é com essa versão que o projeto é testado e documentado. Hoje o 3.11 ainda
+> instala (o projeto fixa a `garminconnect` 0.3.2, que aceita 3.10+), mas está fora do suportado e
+> pode parar de funcionar quando o projeto atualizar a biblioteca: as versões 0.3.5+ da
+> `garminconnect` já exigem 3.12.
 
 1. Vai no site oficial: **https://www.python.org/downloads/windows/**
 2. Procura por **Python 3.13.x** (qualquer versão 3.12 ou mais nova serve)
@@ -156,14 +158,8 @@ pip install -e .
 
 Espera terminar (3-5 min). Quando aparecer `Successfully installed ... garmin-mcp...`, tá pronto!
 
-Confere a versão da biblioteca do Garmin (precisa ser **0.3.5 ou mais nova**, por causa da falha
-de segurança [CVE-2026-54447](#é-seguro)):
-
-```shell
-pip show garminconnect
-```
-
-Se aparecer `Version: 0.2.x`, seu Python é antigo demais. Volta pro Passo 1.1.
+Se der erro dizendo que nenhuma versão é compatível com o seu Python ("requires a different
+Python" / "No matching distribution"), seu Python é antigo demais. Volta pro Passo 1.1.
 
 ---
 
@@ -400,8 +396,9 @@ nada, está funcionando (feche com `Ctrl + C`).
 
 ### Erro de login (401, 403, "login failed") no `garmin-mcp-auth`
 
-- Confere se o Python é 3.12+ e se `pip show garminconnect` mostra 0.3.x ou mais nova. Versões
-  0.2.x usam o login antigo, que não funciona mais.
+- Confere se o Python é 3.12+ e se `pip show garminconnect` mostra 0.3.x. As versões 0.2.x usam o
+  login antigo (biblioteca `garth`, descontinuada), que não funciona mais. Isso acontece com
+  instalações antigas do conector: atualize (abaixo).
 - Atualiza o conector ([Como atualizar](#como-atualizar-o-conector)) e tenta
   `garmin-mcp-auth --force-reauth`.
 - Se ainda falhar, olhe as [issues do garmin_mcp](https://github.com/Taxuspt/garmin_mcp/issues):
@@ -587,9 +584,11 @@ mostrava nenhum arquivo publicado, então confira antes.
   enviados pra Anthropic** como parte da conversa, igual a qualquer coisa que você digita no
   Claude. O conector não manda dados pra mais ninguém, mas eles saem do seu PC.
 - **Falha de segurança CVE-2026-54447** (publicada em julho/2026): a `garminconnect` até a versão
-  **0.3.4** salvava o arquivo de tokens com permissão de leitura pra outros usuários do computador.
-  Corrigido na **0.3.5**. Se o PC é compartilhado e você instalou antes disso, atualize
-  ([Como atualizar](#como-atualizar-o-conector)) e refaça o login com `--force-reauth`.
+  **0.3.4** podia salvar o arquivo de tokens com permissão de leitura pra outros usuários do
+  computador (problema de sistemas tipo Linux/macOS). O `garmin_mcp` usa a 0.3.2, mas **aplica a
+  mesma correção por conta própria**: depois do login ele restringe a pasta de tokens ao seu
+  usuário. No Windows, a pasta `C:\Users\SEUNOME` já é privada do seu usuário por padrão. Mesmo
+  assim, num PC compartilhado, não deixe outras pessoas usarem a sua conta do Windows.
 - É uma biblioteca **não oficial**: a própria Garmin não aprova nem dá suporte a esse acesso.
 
 Se algum dia quiser desconectar:
@@ -677,7 +676,7 @@ Me guia do zero, passo a passo. Não sei programar.
 
 | # | Original | Atualizado | Por quê |
 |---|----------|------------|---------|
-| 1 | Python **3.11** | Python **3.12+** (recomendado 3.13) | `garminconnect` 0.3+ exige Python >= 3.12. No 3.11 o pip instala a 0.2.x, que usa o `garth` (descontinuado; o login dele não funciona mais). O README do `garmin_mcp` também pede 3.12+. |
+| 1 | Python **3.11** | Python **3.12+** (recomendado 3.13) | O README do `garmin_mcp` pede 3.12+. O 3.11 ainda instala hoje (`garminconnect` fixada em 0.3.2, que aceita 3.10+), mas a `garminconnect` 0.3.5+ já exige 3.12. |
 | 2 | Caixa "Add Python to PATH" | "Add python.exe to PATH" + nota sobre o Python Install Manager | Nome atual da opção. O instalador tradicional deixa de existir no Python 3.16. |
 | 3 | `git-scm.com/download/win` | `git-scm.com/install/windows` (+ `winget`) | O link antigo agora redireciona. |
 | 4 | Prompt de Comando "como administrador" em tudo | Prompt normal | Não é necessário, e como admin o terminal abre em `C:\Windows\System32`, o que confunde. |
@@ -690,7 +689,7 @@ Me guia do zero, passo a passo. Não sei programar.
 | 11 | — | Nota sobre MFA não funcionar dentro do Claude | Documentado no README (erro "no interactive terminal available"). |
 | 12 | — | Tokens antigos incompatíveis; arquivo agora é `garmin_tokens.json` | Mudança de formato na `garminconnect` 0.3.0. |
 | 13 | "Nenhum servidor de terceiros tem acesso aos seus dados" | Esclarecido que os dados consultados vão pra Anthropic | Tudo que o conector devolve entra na conversa com o Claude. |
-| 14 | — | CVE-2026-54447 (corrigida na `garminconnect` 0.3.5) | Arquivo de tokens legível por outros usuários do PC. |
+| 14 | — | Nota sobre a CVE-2026-54447 | Afeta a `garminconnect` <= 0.3.4 (o `garmin_mcp` usa a 0.3.2), mas o `garmin_mcp` restringe as permissões dos tokens por conta própria (`secure_token_dir`). |
 | 15 | — | Seções "Como atualizar", "Caminho alternativo com uv" e aviso de lib não oficial | O README atual recomenda `uv`/`uvx`; o próprio autor dos posts avisa que a lib pode quebrar. |
 | 16 | "Extensões de nome de arquivo" em Exibir | Caminho separado pra Windows 10 e 11 | No Windows 11 a opção fica em Exibir → Mostrar. |
 | 17 | Seção "Curtiu? Retribui assim" | Removida | O texto estava cortado no screenshot. |
@@ -700,7 +699,10 @@ Me guia do zero, passo a passo. Não sei programar.
 - [Taxuspt/garmin_mcp: README](https://github.com/Taxuspt/garmin_mcp) e
   [pyproject.toml](https://raw.githubusercontent.com/Taxuspt/garmin_mcp/main/pyproject.toml)
 - [cyberjunky/python-garminconnect: README](https://github.com/cyberjunky/python-garminconnect)
-- [garminconnect no PyPI](https://pypi.org/project/garminconnect/) (0.3.17, requires Python >= 3.12)
+- [garminconnect no PyPI](https://pypi.org/project/garminconnect/) (0.3.2 aceita Python >= 3.10;
+  0.3.5+ exige >= 3.12; versão mais recente: 0.3.17)
+- [garmin_mcp: uv.lock e token_utils.py](https://github.com/Taxuspt/garmin_mcp/tree/main/src/garmin_mcp)
+  (`garminconnect==0.3.2`; permissões dos tokens restritas ao dono)
 - [garth no PyPI](https://pypi.org/project/garth/) ("Garth is deprecated and no longer maintained")
 - [Advisory CVE-2026-54447 (garminconnect <= 0.3.4)](https://feed.craftedsignal.io/products/garminconnect--0.3.4/feed.xml)
 - [MCP: Connect to local MCP servers (Claude Desktop, config e logs)](https://modelcontextprotocol.io/docs/develop/connect-local-servers)

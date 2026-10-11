@@ -43,11 +43,10 @@ recomendado hoje pelo README do `garmin_mcp`.
 
 Esta é uma versão revisada de um tutorial que circulou no Instagram. As correções principais:
 
-- **Python 3.12+** em vez de 3.11. No 3.11 o pip instala uma versão antiga da biblioteca, cujo
-  login a Garmin bloqueou.
+- **Python 3.12+** em vez de 3.11, como pede o README atual do `garmin_mcp`.
 - Removida a variável `GARMIN_COOKIES_FILE`, que não existe no `garmin_mcp`.
 - Caminhos atuais do Claude Desktop para editar a configuração e ver os logs.
-- Aviso sobre a falha de segurança CVE-2026-54447 (corrigida na `garminconnect` 0.3.5).
+- Nota sobre a falha de segurança CVE-2026-54447 e como o `garmin_mcp` lida com ela.
 - Seções novas: como atualizar, caminho com `uv`, MFA e verificação dos tokens.
 
 A lista completa, com as fontes, está no fim do
